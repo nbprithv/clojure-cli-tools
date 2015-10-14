@@ -9,35 +9,37 @@
 (defn -main [filepath numberoffilestosplitinto]
 	(println filepath)
 	(println numberoffilestosplitinto)
-	(def linecount (get-line-count filepath))
-	(split-files linecount filepath numberoffilestosplitinto)
-)
+	(let [linecount (get-line-count filepath)
+		numberoffilestosplitinto (read-string numberoffilestosplitinto)
+		linesperfile (Math/floor(* (/ numberoffilestosplitinto linecount) 100))
+		]
+		(println linesperfile)
+		(split-files linecount filepath linesperfile)))
 
 (defn get-line-count [filepath]
 	(def linecount 0)
 	(with-open [r (io/reader filepath)]
    	(doseq [l (line-seq r)]
     (def linecount (+ 1 linecount))))
-	linecount
-)
+	linecount)
 
-(defn split-files [linecount filepath numberoffilestosplitinto]
+(defn split-files [linecount filepath linesperfile]
 	;(def destfilepath "/tmp/file-1.txt")
-	;(println (string/join " " ["a" numberoffilestosplitinto]))
 	(def currlinenumber 1)
+	(println linesperfile)
 	(with-open [r (io/reader filepath)]
    	(doseq [l (line-seq r)]
    		(let [currpos (find-file-pos linecount currlinenumber)
-			numberoffilestosplitinto (read-string numberoffilestosplitinto)
-   			fileext (mod currpos numberoffilestosplitinto)]
-   			(println (string/join "    " [currpos fileext currlinenumber (string/join "" ["/tmp/file-" fileext ".txt"])]))
+			;numberoffilestosplitinto (Math/floor(/ 100 (read-string numberoffilestosplitinto)))
+   			fileext (Math/floor(/ currpos linesperfile))
+   			]
+   			(println (string/join "    " [fileext currpos linesperfile (string/join "" ["/tmp/file-" fileext ".txt"])]))
    			;(with-open [wrtr (clojure.java.io/writer (string/join "" ["/tmp/file-" fileext ".txt"]) :append true)]
 	  		;(.write wrtr l)
 	  		;(.write wrtr "\n"))
 		)	    
    		(def currlinenumber (+ 1 currlinenumber))
-    ))
-)
+    )))
 
 (defn find-file-pos [totallines currline]
 	(def currpos (int (Math/floor(* (/ currline totallines) 100))))
