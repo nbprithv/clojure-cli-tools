@@ -7,9 +7,13 @@ A Clojure library designed to learn Clojure while creating some useful command l
 Install [leiningen](leiningen.org)
 
 ```
-lein run "path/to/file"
+lein run path/to/file
 lein compile
 lein uberjar
+```
+
+If you just have Java you can run the jar from command line like this
+```
 java -jar ./target/cli-tools-0.1.0-SNAPSHOT-standalone.jar /tmp/test.txt
 ```
 
