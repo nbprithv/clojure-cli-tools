@@ -13,6 +13,7 @@
 		numberoffilestosplitinto (read-string numberoffilestosplitinto)
 		linesperfile (Math/floor(* (/ numberoffilestosplitinto linecount) 100))
 		]
+		(println linecount)
 		(println linesperfile)
 		(split-files linecount filepath linesperfile)))
 
@@ -31,12 +32,12 @@
    	(doseq [l (line-seq r)]
    		(let [currpos (find-file-pos linecount currlinenumber)
 			;numberoffilestosplitinto (Math/floor(/ 100 (read-string numberoffilestosplitinto)))
-   			fileext (Math/floor(/ currpos linesperfile))
+   			fileext (Math/floor(/ currlinenumber linesperfile))
    			]
-   			(println (string/join "    " [fileext currpos linesperfile (string/join "" ["/tmp/file-" fileext ".txt"])]))
-   			;(with-open [wrtr (clojure.java.io/writer (string/join "" ["/tmp/file-" fileext ".txt"]) :append true)]
-	  		;(.write wrtr l)
-	  		;(.write wrtr "\n"))
+   			(println (string/join "    " [fileext currlinenumber linesperfile (string/join "" ["/tmp/file-" fileext ".txt"])]))
+   			(with-open [wrtr (clojure.java.io/writer (string/join "" ["/tmp/file-" fileext ".txt"]) :append true)]
+	  		(.write wrtr l)
+	  		(.write wrtr "\n"))
 		)	    
    		(def currlinenumber (+ 1 currlinenumber))
     )))
