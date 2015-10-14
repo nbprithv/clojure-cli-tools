@@ -6,16 +6,16 @@
 (declare split-files)
 (declare find-file-pos)
 
-(defn -main [filepath numberoffilestosplitinto]
+(defn -main [filepath numberoffilestosplitinto destdir]
 	(println filepath)
 	(println numberoffilestosplitinto)
 	(let [linecount (get-line-count filepath)
 		numberoffilestosplitinto (read-string numberoffilestosplitinto)
-		linesperfile (Math/floor(* (/ numberoffilestosplitinto linecount) 100))
+		linesperfile (Math/floor(/ linecount numberoffilestosplitinto))
 		]
 		(println linecount)
 		(println linesperfile)
-		(split-files linecount filepath linesperfile)))
+		(split-files linecount filepath linesperfile destdir)))
 
 (defn get-line-count [filepath]
 	(def linecount 0)
@@ -24,7 +24,7 @@
     (def linecount (+ 1 linecount))))
 	linecount)
 
-(defn split-files [linecount filepath linesperfile]
+(defn split-files [linecount filepath linesperfile destdir]
 	;(def destfilepath "/tmp/file-1.txt")
 	(def currlinenumber 1)
 	(println linesperfile)
@@ -34,8 +34,8 @@
 			;numberoffilestosplitinto (Math/floor(/ 100 (read-string numberoffilestosplitinto)))
    			fileext (Math/floor(/ currlinenumber linesperfile))
    			]
-   			(println (string/join "    " [fileext currlinenumber linesperfile (string/join "" ["/tmp/file-" fileext ".txt"])]))
-   			(with-open [wrtr (clojure.java.io/writer (string/join "" ["/tmp/file-" fileext ".txt"]) :append true)]
+   			(println (string/join "    " [fileext currlinenumber linesperfile (string/join "" [destdir "file-" fileext ".txt"])]))
+   			(with-open [wrtr (clojure.java.io/writer (string/join "" [destdir "file-" fileext ".txt"]) :append true)]
 	  		(.write wrtr l)
 	  		(.write wrtr "\n"))
 		)	    
