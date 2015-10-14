@@ -14,7 +14,7 @@ lein uberjar
 
 If you just have Java you can run the jar from command line like this
 ```
-java -jar ./target/cli-tools-0.1.0-SNAPSHOT-standalone.jar /tmp/test.txt
+java -jar ./target/cli-tools-0.1.0-SNAPSHOT-standalone.jar /tmp/test.txt number-of-files-to-split-into
 ```
 
 ## License
