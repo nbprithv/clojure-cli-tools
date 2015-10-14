@@ -34,10 +34,13 @@
    		(let [currpos (find-file-pos linecount currlinenumber)
 			numberoffilestosplitinto (read-string numberoffilestosplitinto)
    			fileext (mod currpos numberoffilestosplitinto)]
-   			(println (string/join " " [fileext "   " currlinenumber])))
-	    ;(with-open [wrtr (clojure.java.io/writer "/tmp/test1.txt" :append true)]
-	  	;(.write wrtr l)
-	  	;(.write wrtr "\n"))
+   			(println (string/join " " [fileext "   " currlinenumber]))
+   			(with-open [wrtr (clojure.java.io/writer "/tmp/test1.txt" :append true)]
+	  		(.write wrtr l)
+	  		(.write wrtr "\n"))
+		)
+
+	    
    		(def currlinenumber (+ 1 currlinenumber))
     ))
 	)
