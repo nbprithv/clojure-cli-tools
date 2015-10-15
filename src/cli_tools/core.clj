@@ -22,13 +22,42 @@
 	["-u" "--update"]])
 
 (defn -main [& args]
-  (let [ optionsmap (get (parse-opts args cli-options) :options)
-  		filepath (get optionsmap :inputfile)
-  		linecount (get-line-count filepath)
-  		numberoffilestosplitinto (read-string (get optionsmap :count))
-  ]
-  ;(if)
-  (clojure.pprint/pprint optionsmap)))
+	(let [ optionsmap (get (parse-opts args cli-options) :options)
+	  		
+	  		;numberoffilestosplitinto (read-string (get optionsmap :count))
+	  ]
+	  (if (nil? (get optionsmap :mode))
+	  	(println "Option -m missing") 
+	  	(if (= 0 (compare "split" (get optionsmap :mode)))
+	  		(if (nil? (get optionsmap :inputfile))
+	  			(println "Input file path is missing")
+	  			(if (nil? (get optionsmap :destdir))
+	  				(println "Output dir is missing")
+	  				(do (if (nil? (get optionsmap :count))
+	  						(do (def numberoffilestosplitinto "2")
+	  						(println "Defaulting number of files to 2"))
+	  						(def numberoffilestosplitinto (get optionsmap :count))
+  						)
+						(let [ filepath (get optionsmap :inputfile)
+							destdir (get optionsmap :destdir)
+							linecount (get-line-count filepath)
+							numberoffilestosplitinto (read-string numberoffilestosplitinto)
+							linesperfile (Math/floor(/ linecount numberoffilestosplitinto))
+							]
+							(println numberoffilestosplitinto)
+							(split-files linecount filepath linesperfile destdir)
+							)
+  					)
+	  			)
+	  		)
+  			(if (= 0 (compare "update" (get optionsmap :mode)))
+  				()
+  				(println "I dont know what mode you want. split or update")
+  			) 
+	  	)
+	  )
+	  (clojure.pprint/pprint optionsmap))
+  )
 
 (comment
 (defn -main [filepath numberoffilestosplitinto destdir]
