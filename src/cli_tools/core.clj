@@ -1,11 +1,36 @@
 (ns cli-tools.core
-	(:require [clojure.java.io :as io][clojure.string :as string])
+	(:require [clojure.java.io :as io]
+		[clojure.string :as string]
+		[clojure.tools.cli :refer [parse-opts]])
 	(:gen-class))
 
 (declare get-line-count)
 (declare split-files)
 (declare find-file-pos)
 
+(def cli-options
+  [
+  	;; Possible values "split" or "update"
+  	["-m" "--mode STRING" "Mode of operation"]
+  	;; Path to the input file to be split up
+	["-i" "--inputfile FILEPATH" "Input file path"]
+	;; Output directory for the split up files
+	["-o" "--destdir FILEPATH" "Destination file path"]
+	;; Number of files to produce from the input file
+	["-n" "--count NUMBER" "Number of files you want to split into"]
+   	;; Get the new updates for yesterday
+	["-u" "--update"]])
+
+(defn -main [& args]
+  (let [ optionsmap (get (parse-opts args cli-options) :options)
+  		filepath (get optionsmap :inputfile)
+  		linecount (get-line-count filepath)
+  		numberoffilestosplitinto (read-string (get optionsmap :count))
+  ]
+  ;(if)
+  (clojure.pprint/pprint optionsmap)))
+
+(comment
 (defn -main [filepath numberoffilestosplitinto destdir]
 	(println filepath)
 	(println numberoffilestosplitinto)
@@ -16,6 +41,7 @@
 		(println linecount)
 		(println linesperfile)
 		(split-files linecount filepath linesperfile destdir)))
+)
 
 (defn get-line-count [filepath]
 	(def linecount 0)
