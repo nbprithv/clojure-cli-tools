@@ -35,9 +35,10 @@
    			fileext (Math/floor(/ currlinenumber linesperfile))
    			]
    			(println (string/join "    " [fileext currlinenumber linesperfile (string/join "" [destdir "file-" fileext ".txt"])]))
+   			(if (.contains l "/mbst/") (println (string/join "" ["[IGNORE]" l])) 
    			(with-open [wrtr (clojure.java.io/writer (string/join "" [destdir "file-" fileext ".txt"]) :append true)]
 	  		(.write wrtr l)
-	  		(.write wrtr "\n"))
+	  		(.write wrtr "\n")))
 		)	    
    		(def currlinenumber (+ 1 currlinenumber))
     )))
