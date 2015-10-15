@@ -23,6 +23,7 @@ Options
 -i Input file path
 -o Output file dir
 -n Number of files to be split into
+-h Show help
 ```
 
 ## License
